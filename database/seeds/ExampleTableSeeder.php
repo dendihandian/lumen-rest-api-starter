@@ -11,6 +11,6 @@ class ExampleTableSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call('UsersTableSeeder');
+        factory(\App\Models\Example::class, 5)->create();
     }
 }

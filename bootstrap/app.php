@@ -71,6 +71,8 @@ $app->routeMiddleware([
     'cors' => \Barryvdh\Cors\HandleCors::class,
     'findExample' => App\Http\Middleware\FindExample::class,
     'validateExample' => App\Http\Middleware\ValidateExample::class,
+    'findExampleChildren' => App\Http\Middleware\FindExampleChildren::class,
+    'validateExampleChildren' => App\Http\Middleware\ValidateExampleChildren::class,
 ]);
 
 /*

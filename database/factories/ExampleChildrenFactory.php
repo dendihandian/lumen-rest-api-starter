@@ -11,8 +11,9 @@
 |
 */
 
-$factory->define(App\Models\Example::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\ExampleChildren::class, function (Faker\Generator $faker) {
     return [
+        'parent_id' => function () { return factory(App\Models\Example::class)->create()->id; },
         'name' => $faker->name,
     ];
 });

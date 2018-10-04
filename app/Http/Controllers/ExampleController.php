@@ -19,8 +19,8 @@ class ExampleController extends Controller
 
     public function index()
     {
-        $examples = Example::all();
-        // $examples = Example::with('children')->get();
+        // $examples = Example::all();
+        $examples = Example::with('children')->get();
 
         $this->responseMessage = 'Example List';
         $this->responseData = $examples;

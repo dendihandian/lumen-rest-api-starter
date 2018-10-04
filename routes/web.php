@@ -15,16 +15,37 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+// api/
 $router->group(['prefix' => 'api', 'middleware' => 'cors'], function ($router) {
+    // api/examples
     $router->group(['prefix' => 'examples'], function ($router) {
         $router->get('/', 'ExampleController@index');
         $router->post('/', ['middleware' => 'validateExample', 'uses' => 'ExampleController@store']);
-        $router->group(['prefix' => '/{example}'], function ($router) {
-            $router->get('/', ['middleware' => 'findExample', 'uses' => 'ExampleController@show']);
-            $router->patch('/', ['middleware' => ['validateExample', 'findExample'], 'uses' => 'ExampleController@update']);
-            $router->delete('/', ['middleware' => 'findExample', 'uses' => 'ExampleController@destroy']);
+
+        // api/examples/{example}
+        $router->group(['prefix' => '{example}', 'middleware' => 'findExample'], function ($router) {
+            $router->get('/', 'ExampleController@show');
+            $router->patch('/', ['middleware' => 'validateExample', 'uses' => 'ExampleController@update']);
+            $router->delete('/', 'ExampleController@destroy');
+
+            // api/examples/{example}/children
+            $router->group(['prefix' => 'children'], function ($router) {
+                $router->get('/', 'ExampleChildrenController@index');
+                $router->post('/', ['middleware' => 'validateExampleChildren', 'uses' => 'ExampleChildrenController@store']);
+
+                // api/examples/{example}/children/{child}
+                $router->group(['prefix' => '{child}', 'middleware' => 'findExampleChildren'], function ($router) {
+                    $router->get('/', 'ExampleChildrenController@show');
+                    $router->patch('/', ['middleware' => 'validateExampleChildren', 'uses' => 'ExampleChildrenController@update']);
+                    $router->delete('/', 'ExampleChildrenController@destroy');
+                });
+            });
         });
+
+
+        // api/examples/search
         $router->group(['prefix' => 'search'], function ($router) {
+            // api/examples/search/{keyword}
             $router->get('/{keyword}', 'ExampleController@search');
         });
     });
